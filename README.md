@@ -1,0 +1,2 @@
+# AlgorytmicznaTeoriaGrafow
+Algorytmiczna teoria grafów
