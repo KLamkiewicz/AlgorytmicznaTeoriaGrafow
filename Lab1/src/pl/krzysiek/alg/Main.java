@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 import pl.krzysiek.alg.function.GraphFunctions;
 import pl.krzysiek.alg.function.GraphReader;
+import pl.krzysiek.alg.function.GraphSequence;
 
 /**
  *
@@ -13,6 +14,7 @@ import pl.krzysiek.alg.function.GraphReader;
  */
 public class Main {
 
+    static String SEQUENCE_FILE = "sequence.txt";
     static final int INVALID_VALUE = -1;
     static final String ERROR_MSG = "Given input is invalid";
     static List<List<Integer>> adjacencyMatrix = new ArrayList<>();
@@ -24,11 +26,9 @@ public class Main {
     public static void main(String[] args) {
 
         gf = new GraphFunctions(GraphReader.loadGraphMatrix());
-        //gf.addVertex();
-        //gf.addVertex();
-        gf.printMinAndMaxDegree();
-        gf.printEvenAndOddCount();
-        gf.displayMatrix();
+        //gf.printDegreeSequence();
+        //gf.displayMatrix();
+        GraphSequence.checkGraphicSequence(SEQUENCE_FILE);
         
         while (isRunning) {
             displayMenu();
@@ -70,6 +70,12 @@ public class Main {
                 case 8:
                     gf.printEvenAndOddCount();
                     break;
+                case 9:
+                    gf.printDegreeSequence();
+                    break;
+                case 10:
+                    GraphSequence.checkGraphicSequence( SEQUENCE_FILE );
+                    break;
             }
         }
 
@@ -96,6 +102,8 @@ public class Main {
                 .append(" 6 - Add edge\n")
                 .append(" 7 - Print min and max degree\n")
                 .append(" 8 - Print even and odd count degree\n")
+                .append(" 9 - Print degree sequence\n")
+                .append(" 10 - Check graphic sequence from file\n")
                 .append(" 404 - Exit \n");
 
         System.out.println(sb.toString());

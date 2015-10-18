@@ -3,7 +3,7 @@ package pl.krzysiek.alg.function;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
+import java.util.Comparator;
 import java.util.List;
 import pl.krzysiek.alg.exceptions.GraphEdgeException;
 
@@ -131,7 +131,6 @@ public class GraphFunctions {
         System.out.println(" Minimal degree in current graph : " + Collections.min(lst));
         System.out.println(" Maximal degree in current graph : " + Collections.max(lst));
     }
-    //TODO add vertex degree??
     
     public void printEvenAndOddCount()
     {
@@ -161,4 +160,75 @@ public class GraphFunctions {
         System.out.println( "Number of vertices with odd degrees : " + odd);
     }
     
+    public void printDegreeSequence() {
+        if (adjacencyMatrix.isEmpty()) {
+            System.out.println("There is no graph");
+            return;
+        }
+
+        Integer[] degrees = new Integer[adjacencyMatrix.size()];
+        Arrays.fill(degrees, 0);
+
+        for (List<Integer> row : adjacencyMatrix) {
+            for (int c = 0; c < row.size(); c++) {
+                degrees[c] = degrees[c] + row.get(c);
+            }
+        }
+        List<Integer> lst = Arrays.asList(degrees);
+        Collections.sort(lst, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                if (o1 <= o2) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            }
+        });
+
+        System.out.println( " Degree sequence : " + lst.toString());
+    }
+    
+    public void containsCycleC3()
+    {
+        if (adjacencyMatrix.isEmpty()) {
+            System.out.println("There is no graph");
+            return;
+        }
+        Integer[][] adjArr = new Integer[adjacencyMatrix.size()][adjacencyMatrix.size()];
+        for(int i=0; i<adjArr.length;i++)
+        {
+            Arrays.fill(adjArr[i], 0);
+        }
+        for( int i=0; i<adjacencyMatrix.size(); i++)
+        {
+            for( int j=0; j<adjacencyMatrix.get(i).size(); j++)
+            {
+                for( int r=0; r<adjacencyMatrix.get(i).size(); r++)
+                {
+                    adjArr[i][j] += adjacencyMatrix.get(i).get(r) * adjacencyMatrix.get(r).get(j);
+                }
+            }
+        }
+        boolean containsC3 = false;
+        for( int i = 0; i<adjArr.length; i++)
+        {
+            if( adjArr[i][i] == 3)
+            {
+                containsC3 = true;
+            }
+        }System.out.println( containsC3 );
+        for(int i=0;i<adjArr.length;i++)
+        {
+            for(int j=0;j<adjArr.length;j++)
+            {
+                System.out.print( adjArr[i][j] + " ");
+                if( adjArr[i][i] == 3)
+                {
+                    containsC3 = true;
+                }
+            }
+            System.out.println("");
+        }
+    }
 }

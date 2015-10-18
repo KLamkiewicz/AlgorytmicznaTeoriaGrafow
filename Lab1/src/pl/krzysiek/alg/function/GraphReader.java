@@ -18,12 +18,12 @@ import pl.krzysiek.alg.exceptions.InvalidMatrixException;
 public class GraphReader {
 
     private static final String ERROR_INVALID_FILE = "Error: Provided matrix is invalid. Empty matrix will be used. ";
-    private static final String INFO_EMPTY_FILE = "Info: Provided file is empty. Empty matrix will be used.";
+    private static final String INFO_EMPTY_FILE = "Info: Provided file is empty ";
     
-    private static List<String> readDataFromFile() throws Exception {
+    static List<String> readDataFromFile( String strFileName ) throws Exception {
         List<String> lstData = new ArrayList<>();
 
-        File file = new File(FileInterface.class.getResource("graph.txt").getFile());
+        File file = new File(FileInterface.class.getResource(strFileName).getFile());
         try (InputStream is = new FileInputStream(file);
                 BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
 
@@ -64,9 +64,10 @@ public class GraphReader {
         }
     }
 
-    public static List<List<Integer>> loadGraphMatrix() {
+    public static List<List<Integer>> loadGraphMatrix( ) {
+        String strFileName = "graph.txt";
         try {
-            List<List<Integer>>  lstMatrix = generateMatrix( readDataFromFile() );
+            List<List<Integer>>  lstMatrix = generateMatrix( readDataFromFile( strFileName ) );
             validateMatrix(lstMatrix);
             return lstMatrix;   
         } catch (EmptyFileException ex) {
