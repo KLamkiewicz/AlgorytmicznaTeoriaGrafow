@@ -26,10 +26,7 @@ public class Main {
     public static void main(String[] args) {
 
         gf = new GraphFunctions(GraphReader.loadGraphMatrix());
-        //gf.printDegreeSequence();
-        //gf.displayMatrix();
-        GraphSequence.checkGraphicSequence(SEQUENCE_FILE);
-        
+        gf.containsCycleC3();
         while (isRunning) {
             displayMenu();
             i = readInput(scanner);
@@ -44,6 +41,7 @@ public class Main {
                     gf.displayMatrix();
                     break;
                 case 3:
+                    System.out.println("Provide vertex id to be removed ");
                     int vertex = readInput(scanner);
                     gf.removeVertex(vertex);
                     break;
@@ -74,6 +72,9 @@ public class Main {
                     gf.printDegreeSequence();
                     break;
                 case 10:
+                    gf.containsCycleC3();
+                    break;
+                case 11:
                     GraphSequence.checkGraphicSequence( SEQUENCE_FILE );
                     break;
             }
@@ -103,7 +104,8 @@ public class Main {
                 .append(" 7 - Print min and max degree\n")
                 .append(" 8 - Print even and odd count degree\n")
                 .append(" 9 - Print degree sequence\n")
-                .append(" 10 - Check graphic sequence from file\n")
+                .append(" 10 - Check if graph contains C3 cycle\n")
+                .append(" 11 - Check graphic sequence from file\n")
                 .append(" 404 - Exit \n");
 
         System.out.println(sb.toString());

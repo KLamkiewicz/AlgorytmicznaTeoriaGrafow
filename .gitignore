@@ -1,1 +1,4 @@
 *.class
+/Lab1/dist/
+/ATGT/nbproject/private/
+/ATGT/build/

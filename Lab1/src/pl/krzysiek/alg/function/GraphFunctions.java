@@ -200,35 +200,24 @@ public class GraphFunctions {
         {
             Arrays.fill(adjArr[i], 0);
         }
-        for( int i=0; i<adjacencyMatrix.size(); i++)
-        {
-            for( int j=0; j<adjacencyMatrix.get(i).size(); j++)
+        for(int s=0; s<2; s++){
+            for( int i=0; i<adjacencyMatrix.size(); i++)
             {
-                for( int r=0; r<adjacencyMatrix.get(i).size(); r++)
+                for( int j=0; j<adjacencyMatrix.get(i).size(); j++)
                 {
-                    adjArr[i][j] += adjacencyMatrix.get(i).get(r) * adjacencyMatrix.get(r).get(j);
+                    for( int r=0; r<adjacencyMatrix.get(i).size(); r++)
+                    {
+                        adjArr[i][j] += adjacencyMatrix.get(i).get(r) * adjacencyMatrix.get(r).get(j);
+                    }
                 }
             }
         }
-        boolean containsC3 = false;
-        for( int i = 0; i<adjArr.length; i++)
-        {
-            if( adjArr[i][i] == 3)
-            {
-                containsC3 = true;
-            }
-        }System.out.println( containsC3 );
-        for(int i=0;i<adjArr.length;i++)
-        {
-            for(int j=0;j<adjArr.length;j++)
-            {
-                System.out.print( adjArr[i][j] + " ");
-                if( adjArr[i][i] == 3)
-                {
-                    containsC3 = true;
-                }
-            }
-            System.out.println("");
+        
+        int iSum = 0;
+        for (int i = 0; i < adjacencyMatrix.size(); i++) {
+            System.out.println(adjArr[i][i]);
+            iSum+=adjArr[i][i];
         }
+        System.out.println(iSum/6);
     }
 }
