@@ -57,6 +57,7 @@ public class Triangle {
                 }
             }
         }
+        displayMatrix(outArr);
         
         return outArr;
     }
@@ -83,9 +84,7 @@ public class Triangle {
     
     public static Integer[][] getArr() throws Exception{
         ArrayList<List<Integer>> lst = new ArrayList<>();
-        URL path = Triangle.class.getResource("graph.txt");
-        File file = new File(path.getPath());
-        try (InputStream is = new FileInputStream(file);
+        try (InputStream is = Triangle.class.getResourceAsStream("graph.txt");
                 BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
             for (String strLine; (strLine = br.readLine()) != null;) {
                 List<String> elements = Arrays.asList(strLine.split("\\s"));
