@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -17,7 +18,9 @@ import java.util.Set;
 
 public class Dijkstra {
 
-    private static final int startingVertex = 1;
+    
+    private static final int START_VERTEX = 7;
+    private static final int END_VERTEX = 2;
     
     private static Integer[][] arr;
     private static Integer[][] DOut;
@@ -26,26 +29,13 @@ public class Dijkstra {
     
     public static void main(String[] args) throws Exception {
         init();
-        for( int i=0; i<arrSize; i++)
+        for( int i=0; i<arrSize; i++){
             dijkstraAlg( i );
-        
-        for( int i = 0; i<arrSize; i++ ){
-            for( int j = 0; j<arrSize; j++ ){
-                if(DOut[i][j]==Integer.MAX_VALUE){
-                    System.out.print("0 ");
-                }else
-                    System.out.print(DOut[i][j] + " ");
-            }
-            System.out.println("");
         }
         
-        System.out.println("");
-        for(List<List<Integer>> l : Pi ){
-            for( List<Integer> ls : l){
-                System.out.println( ls.toString() );
-            }
-            System.out.println("");
-        }
+        print();
+        getInfo(START_VERTEX, END_VERTEX);
+
     }
 
     public static void dijkstraAlg(int source){
@@ -80,54 +70,30 @@ public class Dijkstra {
                 }
             }
         }
-        
-        DOut[source] = distance;
-        for( int i=0; i<arrSize; i++){
-            Pi.get(source).add(new ArrayList<>());
+        for( int i=0; i<distance.length; i++ ){
+            DOut[source][i]=distance[i].equals(Integer.MAX_VALUE)?-1:distance[i];
         }
         
         for( int i=0; i<arrSize; i++){
+            Pi.get(source).add(new ArrayList<>());
+        }
+            
+        for( int i=0; i<arrSize; i++){
             List<Integer> pathz = new ArrayList<>();
-            //System.out.println( "\nVertex " + i + " path : ");
             if( distance[i]==Integer.MAX_VALUE){
-                //System.out.print("Can't be reached");
                 continue;
             }
             int end = i;
             while (end != source  ) {
-                //System.out.print(prev[end] + " ");
                 pathz.add( prev[end]);
                 end = prev[end];
             }
-            
+            Collections.reverse(pathz);
             Pi.get(source).get(i).addAll(pathz);
         }
        
         
     }
-    
-    
-    
-//        //Path
-//        for( int i=0; i<arrSize; i++){
-//            System.out.println( "\nVertex " + i + " path : ");
-//            if( distance[i]==Integer.MAX_VALUE){
-//                System.out.print("Can't be reached");
-//                continue;
-//            }
-//            int end = i;
-//            while (end != source  ) {
-//                System.out.print(prev[end] + " ");
-//                end = prev[end];
-//            }
-//        }
-//        System.out.println("");
-//        System.out.println(" Distance");
-//
-//        for(int i=0;i<distance.length;i++){
-//            System.out.println( "FROM " + startingVertex + " TO " + i + " " + distance[i]);
-//            
-//        }
     
     private static Set<Integer> getNeighbors(int vertex) {
         Set<Integer> lst = new HashSet<>();
@@ -172,6 +138,31 @@ public class Dijkstra {
         Pi = new ArrayList<>();
         for( int i=0; i<arrSize; i++){
             Pi.add( new ArrayList<>());
+        }
+    }
+    
+    private static void getInfo( int i, int j ){
+        System.out.println(String.format("Distance %d to %d = %d", i, j, DOut[i][j] ));//Distance from " + i + DOut[i][j]);
+        System.out.println(String.format("Path %d to %d = %s", i, j, Pi.get(i).get(j).toString()));
+    }
+    
+    private static void print(){
+        for( int i = 0; i<arrSize; i++ ){
+            for( int j = 0; j<arrSize; j++ ){
+                if(DOut[i][j]==Integer.MAX_VALUE){
+                    System.out.print(String.format("%5d",-1));
+                }else
+                    System.out.print(String.format("%5d",DOut[i][j]));
+            }
+            System.out.println("");
+        }
+        
+        System.out.println("  \n\n");
+        for(List<List<Integer>> l : Pi ){
+            for( List<Integer> ls : l){
+                System.out.print( String.format("%15s",ls.toString() ));
+            }
+            System.out.println("");
         }
     }
 
