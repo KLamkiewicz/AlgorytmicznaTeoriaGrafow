@@ -19,8 +19,8 @@ import java.util.Set;
 public class Dijkstra {
 
     
-    private static final int START_VERTEX = 7;
-    private static final int END_VERTEX = 2;
+    private static int START_VERTEX;
+    private static int END_VERTEX;
     
     private static Integer[][] arr;
     private static Integer[][] DOut;
@@ -34,6 +34,8 @@ public class Dijkstra {
         }
         
         print();
+        START_VERTEX = Integer.valueOf(args[0]);
+        END_VERTEX = Integer.valueOf(args[1]);
         getInfo(START_VERTEX, END_VERTEX);
 
     }
@@ -49,7 +51,7 @@ public class Dijkstra {
         List<Integer> q = new ArrayList<>();
         for(int i=0; i<arrSize; i++){
             q.add(i);
-            path.add(new ArrayList<>());
+            path.add(new ArrayList<Integer>());
         }
         
         distance[source] = 0;
@@ -75,7 +77,7 @@ public class Dijkstra {
         }
         
         for( int i=0; i<arrSize; i++){
-            Pi.get(source).add(new ArrayList<>());
+            Pi.get(source).add(new ArrayList<Integer>());
         }
             
         for( int i=0; i<arrSize; i++){
@@ -137,7 +139,7 @@ public class Dijkstra {
         }
         Pi = new ArrayList<>();
         for( int i=0; i<arrSize; i++){
-            Pi.add( new ArrayList<>());
+            Pi.add( new ArrayList<List<Integer>>());
         }
     }
     
