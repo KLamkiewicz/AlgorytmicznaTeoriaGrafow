@@ -18,6 +18,12 @@ public class Ramsey {
 
 		Ramsey ramsey = new Ramsey();
 		ramsey.findCriticals();
+//		new LongestPath().containsP4( new Integer[][]{
+//		new Integer[]{0, 0, 1, 1},  
+//		new Integer[]{0, 0, 0, 1}, 
+//		new Integer[]{1, 0, 0, 0},
+//		new Integer[]{1, 1, 0, 0}
+//		});
 //		new LongestPath( new Integer[][]{
 //				new Integer[]{
 //						0, 1, 1, 0
@@ -51,6 +57,7 @@ public class Ramsey {
 	public void findCriticals() throws Exception{
 		int permutations[][] = getAllPermutations();
 		for(int i=0; i<permutationCount; i++){
+			System.out.print( " \nPermutation " + i);
 			colorPermutations(permutations[i]);
 			checkIfPermutationIsCritical(permutations[i]);
 			reinitializeColorArrays();
@@ -61,8 +68,10 @@ public class Ramsey {
 		//CHECK TO BACKTRACKING FOR FINDING THE LONGEST PATH
 		LongestPath lp = new LongestPath();
 		System.out.println();
-		boolean sapphireIsCritical = lp.hamiltonianCycle(sapphireArr);
-		boolean scarletIsCritical = lp.hamiltonianCycle(scarletArr);
+		boolean sapphireIsCritical = lp.containsP4(sapphireArr);
+		boolean scarletIsCritical = lp.containsP4(scarletArr);
+		System.out.println(sapphireIsCritical);
+		System.out.println(scarletIsCritical);
 		boolean isCritical = !(sapphireIsCritical || scarletIsCritical );
 		
 		if( isCritical ){

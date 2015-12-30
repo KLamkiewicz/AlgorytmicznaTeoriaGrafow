@@ -7,27 +7,27 @@ public class LongestPath {
     private List<Integer> visitedVertices = new ArrayList<>();
     private int verticesCount;
     private Integer[][] arr;
-    private final int STARTING_VERTEX = 3;
+    private int STARTING_VERTEX;
     
    public LongestPath(  ){
 
    }
     
-   public boolean hamiltonianCycle(Integer[][] arr){
+   public boolean containsP4(Integer[][] arr){
 	   this.arr = arr;
 	   verticesCount = arr.length;
-       for( int i=0; i<verticesCount; i++){
+	   //displayMatrix(arr);
+	   for( int i=0; i<verticesCount; i++){
+		   //System.out.println( " Starting vertex "  + i);
     	   visitedVertices.clear();
     	   if(hasConnections(i)){
+    		   STARTING_VERTEX = i;
 	    	   visitedVertices.add(i);
-	    	   if( hamiltonianCycle( STARTING_VERTEX ) ){
-		           //printHamiltonianCycle();
+	    	   if( containsP4( i ) ){
+	    		   //printPath();
 		           return true;
 	    	   }
     	   }
-//	       }else{
-//	           System.out.println( "Graph does not contain hamiltonian cycle " );
-//	       }
        }
        
        return false;
@@ -41,18 +41,20 @@ public class LongestPath {
 	   }
 	   return false;
    }
-   public boolean hamiltonianCycle( int vertex ){
+   
+   public boolean containsP4( int vertex ){
       
-       if( isHamiltonian(vertex) ){
-           int first = visitedVertices.get( 0 );
-           visitedVertices.add( first );
+       if( isP4(vertex) ){
+           //int first = visitedVertices.get( 0 );
+           //visitedVertices.add( first );
+    	   printPath();
            return true;
        }
        
        for( int i=0; i<verticesCount; i++ ){
            if( canBeVisited( vertex, i ) ){
                visitedVertices.add( i );         
-               if( hamiltonianCycle( i ) ){
+               if( containsP4( i ) ){
                    return true;
                }        
                deleteLast();      
@@ -61,8 +63,17 @@ public class LongestPath {
        return false;
    } 
    
-   public  boolean isHamiltonian( int lastVertex ){
-       return visitedVertices.size()>3;
+   public  boolean isP4( int lastVertex ){
+	   int vSize = visitedVertices.size();
+	   if( vSize > 3 ){	   
+		   for( int i = 0; i<verticesCount; i++ ){
+			   if( arr[lastVertex][i] == 1 && i!=visitedVertices.get(vSize-2)){
+				   visitedVertices.add(i);printPath();
+		           return true;
+		       }
+		   }
+	   }
+       return false;
    }
    
    public void deleteLast(){
@@ -70,11 +81,12 @@ public class LongestPath {
    }
    
    public boolean canBeVisited( int start, int end ){
-
+	   
+	   //System.out.println( "val "  + arr[start][end] +  " Start " + start  + " end " + end);
 	   if( arr[start][end] != 1 ){
            return false;
        }
-       if( wasVisited( end )  ){
+       if( wasVisited( end ) ){
            return false;
        }
        return true;
@@ -84,7 +96,7 @@ public class LongestPath {
        return visitedVertices.contains( vertex );
    }
 
-    public void printHamiltonianCycle() {
+    public void printPath() {
         System.out.println("Hamiltonian cycle : ");
         int size = visitedVertices.size();
         for( int i=0; i<size; i++ ){
