@@ -35,9 +35,6 @@ public class Flow {
         init();
         SINK = arr.length - 1;
         populateEdges();
-        
-//        displayMatrix(arr);
-//        displayMatrix(residualArr);
     }
 
     public void init() throws Exception {
@@ -75,7 +72,15 @@ public class Flow {
                 if (!edge.isFull() && !edge.getTo().isMarked()) {
                 	int flow = Math.min(edge.getFrom().getMarkValue(), edge.getRemainingCapacity());
                 	edge.getTo().setMark(Mark.POSITIVE, edge.getFrom(), flow );
-                    visitedVertices.add(edge.getTo().getId());
+                	
+                	for(Edge residualEdge : residualEdgeMap.get(edge.getTo())){
+                		if( !residualEdge.isFull() && !residualEdge.getTo().isMarked() && edge.getFrom() == edge.getTo()){
+                			int flowRes = Math.min(residualEdge.getTo().getMarkValue(), residualEdge.getRemainingCapacity());
+                			residualEdge.getTo().setMark(Mark.NEGATIVE, residualEdge.getFrom(), flowRes );
+                		}
+                		//visitedVertices.add(residualEdge.getFrom().getId());
+                	}
+                	visitedVertices.add(edge.getTo().getId());
                 }
                 
             }
@@ -91,31 +96,41 @@ public class Flow {
         return false;
     }
     
+    
+    public void setNegativesOnAllPrevious( Vertex vertex ){
+    }
+    
     public void findFlow(){
     	List<Integer> visitedVertices = new ArrayList<Integer>();
     	
     	while ( containsAugumentationPath() ){
     		Vertex vert = vertices.get(SINK);
-    		int flow = vert.getMarkValue();
+    		int currentFlow = vert.getMarkValue();
     		
     		while( vert!=vertices.get(0)){
     			for( Edge edge : edgeMap.get(vert.getFrom())){
     				if( edge.getTo().equals(vert)){
-    					edge.setFlow(edge.getFlow() + flow);
+    					int newFlow = edge.getFlow() + currentFlow;
+    					edge.setFlow( newFlow );
+    					
+    					
+    					
+    					residualArr[vert.getId()][vert.getFrom().getId()] = newFlow;
+    					residualArr[vert.getFrom().getId()][vert.getId()] = residualArr[vert.getFrom().getId()][vert.getId()]-newFlow;
+    					
     				}
     			}
+//    			for( Edge edge : residualEdgeMap.get(vert.getFrom())){
+//    				if( edge.getTo().equals(vert)){
+//    			}
+    			
     			vert = vert.getFrom();
     		}
-    		System.out.println( " GGG" );
-    	
+    		displayMatrix(residualArr);
+    		displayEdges();
     		clearMarks();
     	}
-    	
-    	for( List<Edge> edges : edgeMap.values()){
-    		for( Edge edge : edges ){
-    			System.out.println( edge );
-    		}
-    	}
+
     }
     
     
@@ -184,4 +199,11 @@ public class Flow {
         System.out.println("");
     }
 
+    public void displayEdges(){
+    	for( List<Edge> edges : edgeMap.values()){
+    		for( Edge edge : edges ){
+    			System.out.println( edge );
+    		}
+    	}
+    }
 }

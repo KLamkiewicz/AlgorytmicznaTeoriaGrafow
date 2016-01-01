@@ -69,5 +69,25 @@ public class Edge {
 		return "Edge [from=" + from.getId() + ", to=" + to.getId() + ", flow=" + flow
 				+ ", capacity=" + capacity + "]";
 	}
-    
+
+
+	@Override
+	public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Edge other = (Edge) obj;
+        if (this.getTo() != other.getTo()) {
+            return false;
+        }
+        if( this.getFrom() != other.getFrom()) {
+        	return false;
+        }
+        return true;
+	}
+
+	
 }
