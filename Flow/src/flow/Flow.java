@@ -23,11 +23,18 @@ public class Flow {
     private Map<Integer, Vertex> vertices;
     private final int SINK;
     
+    private static final String NO_CONNECTION_EXCEPTION = "There is no connection from source to the sink ";
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception {
+        
         Flow flow = new Flow();
+        Dijkstra dijkstra = new Dijkstra();
+        if( !dijkstra.connectionExists(0,  flow.SINK) ){
+            throw new Exception( NO_CONNECTION_EXCEPTION );
+        }
+        
         flow.findFlow();
     }
 
