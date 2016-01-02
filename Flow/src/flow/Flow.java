@@ -93,15 +93,23 @@ public class Flow {
                 System.out.println(visitedVertices);
                 if (!residualEdge.isFull() && !residualEdge.getTo().isMarked()
                         //&& visitedVertices.get(0).equals(residualEdge.getFrom().getId())
-                        && arr[v.getId()][residualEdge.getTo().getId()] == 0 //!residualArr[edge.getTo().getId()][residualEdge.getTo().getId()].equals(
+                        && arr[v.getId()][residualEdge.getTo().getId()] == 0 
+                        && residualArr[residualEdge.getTo().getId()][v.getId()] != 0 
+                        
+                        //!residualArr[edge.getTo().getId()][residualEdge.getTo().getId()].equals(
                         //arr[edge.getTo().getId()][residualEdge.getTo().getId()])
                         ) {
                     System.out.println("---");
                     System.out.println(residualEdge);
                     System.out.println( "edge to diff " + residualEdge.getTo());
+                    System.out.println(" arr " );
+                    System.out.println( " v.getId " + v.getId()  + " res.gettogetid " + residualEdge.getTo().getId());
                     System.out.println( arr[v.getId()][residualEdge.getTo().getId()]);
-                    int flowRes = Math.min(v.getMarkValue(), residualEdge.getRemainingCapacity());
+                    int flowRes = Math.min(v.getMarkValue(), residualArr[residualEdge.getTo().getId()][v.getId()] );
                     System.out.println(flowRes);
+                    System.out.println( "VAL " + v.getMarkValue() );
+                    System.out.println(" A " + arr[v.getId()][residualEdge.getTo().getId()]);
+                    System.out.println(" B " + residualArr[residualEdge.getTo().getId()][v.getId()] );
                     residualEdge.getTo().setMark(Mark.NEGATIVE, residualEdge.getFrom(), flowRes);
                     System.out.println("--");
                     visitedVertices.add(residualEdge.getTo().getId());
@@ -141,8 +149,8 @@ public class Flow {
 
                             int newFlow = edge.getFlow() + valFlow;
                             edge.setFlow(newFlow);
-                            residualArr[vert.getId()][vert.getFrom().getId()] = residualArr[vert.getId()][vert.getFrom().getId()] - valFlow;
-                            residualArr[vert.getFrom().getId()][vert.getId()] = residualArr[vert.getFrom().getId()][vert.getId()] + valFlow;
+                            residualArr[vert.getId()][vert.getFrom().getId()] = arr[vert.getId()][vert.getFrom().getId()] - valFlow;
+                            residualArr[vert.getFrom().getId()][vert.getId()] = arr[vert.getFrom().getId()][vert.getId()] + valFlow;
 
                             }
                         }
@@ -155,8 +163,8 @@ public class Flow {
                             int valFlow = Mark.POSITIVE.equals(mark) ? currentFlow : -currentFlow;
                             int newFlow = edge.getFlow() + valFlow;
                             edge.setFlow(newFlow);
-                            residualArr[vert.getId()][vert.getFrom().getId()] = residualArr[vert.getId()][vert.getFrom().getId()] + valFlow;
-                            residualArr[vert.getFrom().getId()][vert.getId()] = residualArr[vert.getFrom().getId()][vert.getId()] - valFlow;
+                            residualArr[vert.getId()][vert.getFrom().getId()] = arr[vert.getId()][vert.getFrom().getId()] + valFlow;
+                            residualArr[vert.getFrom().getId()][vert.getId()] = arr[vert.getFrom().getId()][vert.getId()] - valFlow;
 
                         }
                     }
@@ -167,6 +175,8 @@ public class Flow {
                 populateEdges(residualEdgeMap, residualArr );
                 System.out.println( " \n residual arr ");
     		displayMatrix(residualArr);
+                System.out.println(" \nregular arr");
+                displayMatrix(arr);
     		displayEdges();
     		clearMarks();
     	}
