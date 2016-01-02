@@ -106,10 +106,10 @@ public class Flow {
                     System.out.println( " v.getId " + v.getId()  + " res.gettogetid " + residualEdge.getTo().getId());
                     System.out.println( arr[v.getId()][residualEdge.getTo().getId()]);
                     int flowRes = Math.min(v.getMarkValue(), residualArr[residualEdge.getTo().getId()][v.getId()] );
-                    System.out.println(flowRes);
-                    System.out.println( "VAL " + v.getMarkValue() );
-                    System.out.println(" A " + arr[v.getId()][residualEdge.getTo().getId()]);
-                    System.out.println(" B " + residualArr[residualEdge.getTo().getId()][v.getId()] );
+                    System.out.println(" FLOW RES " + flowRes);
+                    System.out.println( " V mark value " + v.getMarkValue());
+                    System.out.println(" resarr value " + residualArr[residualEdge.getTo().getId()][v.getId()]);
+                    
                     residualEdge.getTo().setMark(Mark.NEGATIVE, residualEdge.getFrom(), flowRes);
                     System.out.println("--");
                     visitedVertices.add(residualEdge.getTo().getId());
@@ -149,8 +149,14 @@ public class Flow {
 
                             int newFlow = edge.getFlow() + valFlow;
                             edge.setFlow(newFlow);
-                            residualArr[vert.getId()][vert.getFrom().getId()] = arr[vert.getId()][vert.getFrom().getId()] - valFlow;
-                            residualArr[vert.getFrom().getId()][vert.getId()] = arr[vert.getFrom().getId()][vert.getId()] + valFlow;
+                                System.out.println(" val flow " + valFlow);
+                                System.out.println(" new flow " + newFlow);
+                            System.out.println(" arr " + vert.getId() + " "+ vert.getFrom().getId() + " " + residualArr[vert.getId()][vert.getFrom().getId()]);
+                            System.out.println(" arr " + residualArr[vert.getFrom().getId()][vert.getId()]);
+                            residualArr[vert.getId()][vert.getFrom().getId()] = residualArr[vert.getId()][vert.getFrom().getId()] - valFlow;
+                            residualArr[vert.getFrom().getId()][vert.getId()] = residualArr[vert.getFrom().getId()][vert.getId()] + valFlow;
+                            System.out.println(" arr " + vert.getId() + " " + vert.getFrom().getId() + " " + residualArr[vert.getId()][vert.getFrom().getId()]);
+                            System.out.println(" arr " + residualArr[vert.getFrom().getId()][vert.getId()]);
 
                             }
                         }
