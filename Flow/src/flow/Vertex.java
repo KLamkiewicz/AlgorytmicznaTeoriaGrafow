@@ -18,7 +18,7 @@ public class Vertex {
 
     public void clearMark(){
     	this.mark = Mark.NONE;
-    	this.from = null;
+    	//this.from = null;
     	this.markValue = null;
     }
     
